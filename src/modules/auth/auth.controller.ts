@@ -6,7 +6,7 @@ import { UserModel } from "../user/user.model.ts";
 import { env } from "../../config/env.ts";
 import mongoose, { ObjectId } from "mongoose";
 import { RefreshTokenModel } from "../refreshToken/refreshtoken.model.ts";
-import { setCookie } from "../../utils/cookie.util.ts";
+import { clearCookies, setCookie } from "../../utils/cookie.util.ts";
 
 const { JWT_SECRET, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS }: any = env;
 
@@ -130,5 +130,64 @@ export const login = async (req: Request, res: Response) => {
         });
     } finally {
         await session.endSession();
+    }
+};
+
+export const refreshToken = async (req: Request, res: Response) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return res.status(401).json({ message: "Refresh token missing" });
+        }
+
+        const tokenDoc = await RefreshTokenModel.findOne({ token: refreshToken });
+
+        if (!tokenDoc) {
+            return res.status(401).json({ message: "Invalid refresh token" });
+        }
+
+        if (tokenDoc.used) {
+            await RefreshTokenModel.deleteMany({ userId: tokenDoc.userId });
+
+            clearCookies(res);
+
+            return res.status(401).json({
+                message: "Session compromised. Logged out."
+            });
+        }
+
+        if (tokenDoc.expiresAt < new Date()) {
+            await RefreshTokenModel.deleteOne({ _id: tokenDoc._id });
+
+            return res.status(401).json({ message: "Refresh token expired" });
+        }
+
+        tokenDoc.used = true;
+        await tokenDoc.save();
+
+        const user: any = await UserModel.findById(tokenDoc.userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const newToken = generateAccessToken({ _id: user._id, role: user.role });
+
+        const newRefreshToken = generateRefreshToken();
+
+        await RefreshTokenModel.create({
+            userId: user._id,
+            token: newRefreshToken,
+            expiresAt: new Date(
+                Date.now() + Number(REFRESH_TOKEN_EXPIRES_DAYS) * 24 * 60 * 60 * 1000
+            )
+        });
+
+        setCookie(res, newToken, newRefreshToken);
+
+        return res.status(200).json({ message: "Token refreshed" });
+    } catch (err) {
+        console.error("refresh error:", err);
+        return res.status(500).json({ message: "Could not refresh token" });
     }
 };
