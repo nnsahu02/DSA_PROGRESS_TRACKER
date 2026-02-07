@@ -15,4 +15,9 @@ export const setCookie = (res: Response, accessToken: string, refreshToken: stri
         sameSite: "strict",
         maxAge: Number(env.REFRESH_TOKEN_EXPIRES_DAYS) * 24 * 60 * 60 * 1000
     });
-}
+};
+
+export const clearCookies = (res: Response) => {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+};
