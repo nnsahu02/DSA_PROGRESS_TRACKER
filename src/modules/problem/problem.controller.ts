@@ -33,7 +33,7 @@ export const getProblemsByTopicWithProgress = async (req: Request | any, res: Re
         const { topicId } = req.params;
         const userId = req.user.id;
 
-        if (!topicId) {
+        if (!topicId || topicId == undefined) {
             return res.status(400).json({
                 success: false,
                 message: "Topic ID is required"
