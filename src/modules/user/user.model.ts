@@ -22,6 +22,11 @@ const userSchema = new Schema(
             type: String,
             enum: ["student", "admin"],
             default: "student"
+        },
+        lastWorkingOnTopic: {
+            type: Schema.Types.ObjectId,
+            ref: "Topic",
+            default: null
         }
     },
     { timestamps: true }

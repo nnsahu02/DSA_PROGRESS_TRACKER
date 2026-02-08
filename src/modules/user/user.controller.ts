@@ -5,7 +5,7 @@ export const getMyProfile = async (req: Request | any, res: Response) => {
     try {
         const userId = req.user._id;
 
-        const user = await UserModel.findById(userId)
+        const user = await UserModel.findById(userId).populate("lastWorkingOnTopic", "title");
 
         if (!user) {
             return res.status(404).json({
