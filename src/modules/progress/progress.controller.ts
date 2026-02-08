@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import { ProgressModel } from "./progress.model.ts";
 import mongoose from "mongoose";
 import { ProblemModel } from "../problem/problem.model.ts";
+import { TopicModel } from "../topic/topic.model.ts";
+import { UserModel } from "../user/user.model.ts";
 
 export const markCompleted = async (req: Request | any, res: Response) => {
     try {
@@ -23,6 +25,14 @@ export const markCompleted = async (req: Request | any, res: Response) => {
             },
             { upsert: true, new: true }
         );
+
+        const problemData = await ProblemModel.findById(problemId).select("topicId");
+
+        await UserModel.findByIdAndUpdate(userId,
+            {
+                lastWorkingOnTopic: problemData ? problemData.topicId : null
+            }
+        )
 
         res.status(200).json({
             success: true,
@@ -156,6 +166,8 @@ export const getDashboardStats = async (req: any, res: Response) => {
             }
         ]);
 
+        const lastTopic = await TopicModel.findOne({ _id: req.user.lastWorkingOnTopic }).select("title");
+
         const base: any = {
             easy: { total: 0, completed: 0, remaining: 0, progressPercent: 0 },
             medium: { total: 0, completed: 0, remaining: 0, progressPercent: 0 },
@@ -187,7 +199,8 @@ export const getDashboardStats = async (req: any, res: Response) => {
                 totalProblems,
                 completedProblems,
                 remainingProblems,
-                progressPercent
+                progressPercent,
+                lastWorkingOnTopic: lastTopic ? lastTopic.title : null
             },
             difficultyWise: base
         });
@@ -197,6 +210,25 @@ export const getDashboardStats = async (req: any, res: Response) => {
             success: false,
             message: "Failed to load dashboard",
             error: error.message
+        });
+    }
+};
+
+export const restoreAllProgress = async (req: any, res: Response) => {
+    try {
+        const userId = req.user.id;
+
+        await ProgressModel.deleteMany({ userId });
+        await UserModel.findByIdAndUpdate(userId, { lastWorkingOnTopic: null });
+        res.status(200).json({
+            success: true,
+            message: "All progress has been restored successfully"
+        });
+    } catch (error) {
+        console.error("restoreAllProgress error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to restore progress"
         });
     }
 };
