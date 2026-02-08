@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authRouter from "../modules/auth/auth.routes.ts";
+import userRouter from "../modules/user/user.route.ts";
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -7,5 +8,6 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", authRouter);
+router.use("/user", userRouter);
 
 export default router;
