@@ -120,13 +120,14 @@ export const login = async (req: Request, res: Response) => {
             success: true,
             message: "Login successful"
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("ERROR IN LOGIN:", error);
 
         await session.abortTransaction();
         res.status(500).json({
             success: false,
-            message: "Login failed"
+            message: "Login failed",
+            error: error.message
         });
     } finally {
         await session.endSession();
@@ -186,8 +187,25 @@ export const refreshToken = async (req: Request, res: Response) => {
         setCookie(res, newToken, newRefreshToken);
 
         return res.status(200).json({ message: "Token refreshed" });
-    } catch (err) {
+    } catch (err: any) {
         console.error("refresh error:", err);
-        return res.status(500).json({ message: "Could not refresh token" });
+        return res.status(500).json({ message: "Could not refresh token", error: err.message });
+    }
+};
+
+export const logOut = async (req: Request, res: Response) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (refreshToken) {
+            await RefreshTokenModel.deleteOne({ token: refreshToken });
+        }
+
+        clearCookies(res);
+
+        res.status(200).json({ message: "Logged out" });
+    } catch (error: any) {
+        console.error("refresh error:", error);
+        return res.status(500).json({ message: "Error while logout", error: error.message });
     }
 };
