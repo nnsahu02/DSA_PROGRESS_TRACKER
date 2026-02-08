@@ -1,7 +1,7 @@
 import { ConfigModel } from "../internal/internal.config.model.ts";
 import { ProblemModel } from "../modules/problem/problem.model.ts";
 import { TopicModel } from "../modules/topic/topic.model.ts";
-import { Arrays, Strings, topics } from "./seedData.ts";
+import { Arrays, Graphs, LinkedList, Queue, Stack, Strings, topics, Trees } from "./seedData.ts";
 
 export const seedDataInDb = async () => {
     try {
@@ -29,7 +29,12 @@ export const seedDataInDb = async () => {
 
         const seedData: any = {
             Arrays: Arrays,
-            Strings: Strings
+            Strings: Strings,
+            "Linked List": LinkedList,
+            Stack: Stack,
+            Queue: Queue,
+            Trees: Trees,
+            Graphs : Graphs
         }
 
         await TopicModel.deleteMany({});
