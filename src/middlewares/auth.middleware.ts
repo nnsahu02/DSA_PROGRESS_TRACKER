@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { env } from "../config/env.ts";
-import { UserModel } from "../modules/user/user.model.ts";
+import { env } from "../config/env";
+import { UserModel } from "../modules/user/user.model";
 
 export const authentication = async (req: Request | any, res: Response, next: NextFunction) => {
     try {

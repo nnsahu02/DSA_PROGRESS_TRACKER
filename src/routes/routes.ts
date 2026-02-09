@@ -1,9 +1,9 @@
 import { Router } from "express";
-import authRouter from "../modules/auth/auth.routes.ts";
-import userRouter from "../modules/user/user.route.ts";
-import topicRouter from "../modules/topic/topic.routes.ts";
-import problemRouter from "../modules/problem/problrm.route.ts";
-import progressRouter from "../modules/progress/progress.route.ts";
+import authRouter from "../modules/auth/auth.routes";
+import userRouter from "../modules/user/user.route";
+import topicRouter from "../modules/topic/topic.routes";
+import problemRouter from "../modules/problem/problrm.route";
+import progressRouter from "../modules/progress/progress.route";
 const router = Router();
 
 router.get("/", (req, res) => {

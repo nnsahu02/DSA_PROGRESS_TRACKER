@@ -2,11 +2,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import type { Request, Response } from "express";
-import { UserModel } from "../user/user.model.ts";
-import { env } from "../../config/env.ts";
+import { UserModel } from "../user/user.model";
+import { env } from "../../config/env";
 import mongoose, { ObjectId } from "mongoose";
-import { RefreshTokenModel } from "../refreshToken/refreshtoken.model.ts";
-import { clearCookies, setCookie } from "../../utils/cookie.util.ts";
+import { RefreshTokenModel } from "../refreshToken/refreshtoken.model";
+import { clearCookies, setCookie } from "../../utils/cookie.util";
 
 const { JWT_SECRET, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS }: any = env;
 

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import { ProgressModel } from "./progress.model.ts";
+import { ProgressModel } from "./progress.model";
 import mongoose from "mongoose";
-import { ProblemModel } from "../problem/problem.model.ts";
-import { TopicModel } from "../topic/topic.model.ts";
-import { UserModel } from "../user/user.model.ts";
+import { ProblemModel } from "../problem/problem.model";
+import { TopicModel } from "../topic/topic.model";
+import { UserModel } from "../user/user.model";
 
 export const markCompleted = async (req: Request | any, res: Response) => {
     try {

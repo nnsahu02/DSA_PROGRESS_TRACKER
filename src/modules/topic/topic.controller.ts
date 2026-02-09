@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { TopicModel } from "./topic.model.ts";
+import { TopicModel } from "./topic.model";
 import mongoose from "mongoose";
 
 export const getAllTopics = async (req: any, res: Response) => {

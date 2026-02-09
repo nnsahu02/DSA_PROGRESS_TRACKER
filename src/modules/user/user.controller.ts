@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { UserModel } from "./user.model.ts";
+import { UserModel } from "./user.model";
 
 export const getMyProfile = async (req: Request | any, res: Response) => {
     try {

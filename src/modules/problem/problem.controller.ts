@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import type { Request, Response } from "express";
-import { ProblemModel } from "./problem.model.ts";
+import { ProblemModel } from "./problem.model";
 
 export const getProblemsByTopic = async (req: Request, res: Response) => {
     try {

@@ -1,7 +1,7 @@
-import { ConfigModel } from "../internal/internal.config.model.ts";
-import { ProblemModel } from "../modules/problem/problem.model.ts";
-import { TopicModel } from "../modules/topic/topic.model.ts";
-import { Arrays, Graphs, LinkedList, Queue, Stack, Strings, topics, Trees } from "./seedData.ts";
+import { ConfigModel } from "../internal/internal.config.model";
+import { ProblemModel } from "../modules/problem/problem.model";
+import { TopicModel } from "../modules/topic/topic.model";
+import { Arrays, Graphs, LinkedList, Queue, Stack, Strings, topics, Trees } from "./seedData";
 
 export const seedDataInDb = async () => {
     try {

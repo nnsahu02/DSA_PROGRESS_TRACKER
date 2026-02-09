@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getProblemsByTopic, getProblemsByTopicWithProgress } from "./problem.controller.ts";
-import { authentication } from "../../middlewares/auth.middleware.ts";
+import { getProblemsByTopic, getProblemsByTopicWithProgress } from "./problem.controller";
+import { authentication } from "../../middlewares/auth.middleware";
 
 const problemRouter = Router();
 

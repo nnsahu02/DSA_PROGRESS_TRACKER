@@ -5,8 +5,8 @@ import {
     getMyProgress,
     getDashboardStats,
     restoreAllProgress
-} from "./progress.controller.ts";
-import { authentication } from "../../middlewares/auth.middleware.ts";
+} from "./progress.controller";
+import { authentication } from "../../middlewares/auth.middleware";
 
 const ProgressRouter = Router();
 
