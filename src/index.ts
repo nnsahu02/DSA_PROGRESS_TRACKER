@@ -37,6 +37,6 @@ app.use("/", router);
 
 seedDataInDb().then((result) => console.log("🔃", result.message)).catch(err => console.log(err));
 
-app.listen(env.PORT, () => {
+app.listen(env.PORT!, "0.0.0.0", () => {
     console.log(`💻 Server is running on port ${env.PORT}.`);
 });
