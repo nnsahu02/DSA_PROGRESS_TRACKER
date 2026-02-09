@@ -2,6 +2,9 @@ import type { Response } from "express";
 import { env } from "../config/env";
 
 export const setCookie = (res: Response, accessToken: string, refreshToken: string) => {
+    console.log("Access token length:", accessToken.length);
+    console.log("Refresh token length:", refreshToken.length);
+
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: false,
