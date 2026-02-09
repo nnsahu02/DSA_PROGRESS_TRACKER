@@ -9,12 +9,15 @@ import { seedDataInDb } from './seed/seed';
 
 const app = express();
 const allowedOrigins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://3.110.166.182"
 ];
+
 app.use(
     cors({
         origin: (origin, callback) => {
-            // allow server-to-server & tools like Postman
+            // allow requests with no origin (Postman, curl)
             if (!origin) return callback(null, true);
 
             if (allowedOrigins.includes(origin)) {
@@ -24,10 +27,11 @@ app.use(
             return callback(new Error("Not allowed by CORS"));
         },
         credentials: true,
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Authorization", "Content-Type"]
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
     })
 );
+
 app.use(express.json());
 app.use(morgan("dev"))
 app.use(cookieParser());
